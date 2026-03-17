@@ -60,7 +60,7 @@ public class AntiTeamFlashConfig : BasePluginConfig
 public class CS2AntiTeamFlash : BasePlugin, IPluginConfig<AntiTeamFlashConfig>
 {
     public override string ModuleName => "CS2 AntiTeamFlash";
-    public override string ModuleAuthor => "Fixed by le1t1337 + AI DeepSeek. Code logic by Franc1sco Franug";
+    public override string ModuleAuthor => "Fixed by le1t1337 + AI DeepSeek. Code logic by Jesewe";
     public override string ModuleVersion => "1.5";
 
     public required AntiTeamFlashConfig Config { get; set; }
