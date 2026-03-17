@@ -28,6 +28,6 @@ css_antiteamflash_sethudduration <1.0-10.0> – Установить css_antitea
 css_antiteamflash_setaggregationtime <1.0-10.0> – Установить css_antiteamflash_flash_aggregation_time.
 ~~~
 ### ЭТОТ ПЛАГИН ФОРК ЭТОГО ПЛАГИНА:
-~~~
+
 https://github.com/Jesewe/cs2-noflash
-~~~
+
