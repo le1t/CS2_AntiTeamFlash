@@ -6,28 +6,24 @@
 
 ### Требования
 ~~~
-CounterStrikeSharp API версии 362 или выше
-.NET 8.0 Runtime
+CounterStrikeSharp API версии 369 или выше
+.NET 10.0 Runtime
 ~~~
 ### Конфигурационные параметры
 ~~~
-css_antiteamflash_enabled <0/1>, def.=1 – Включение/выключение плагина.
-css_antiteamflash_flashowner <0/1>, def.=1 – Разрешить самоослепление (собственной флешкой): 1 – разрешено, 0 – блокировать самоослепление.
-css_antiteamflash_loglevel <0-5>, def.=4 – Уровень логирования (0-Trace,1-Debug,2-Info,3-Warning,4-Error,5-Critical).
-css_antiteamflash_hud_duration <1.0-10.0>, def.=3.0 – Длительность показа сообщений в HUD (секунды).
-css_antiteamflash_flash_aggregation_time <1.0-10.0>, def.=3.0 – Время агрегации статистики для одной флешки (секунды). За этот период собираются все ослеплённые от одной гранаты, после чего статистика сбрасывается.
+css_antiteamflash_enabled <0/1> деф. 1 – Включение/выключение плагина.
+css_antiteamflash_flashowner <0/1> деф. 1 – Разрешить самоослепление (1 – разрешено, 0 – блокировать).
+css_antiteamflash_hud_duration <1.0-10.0> деф. 3.0 – Длительность показа HUD (секунды).
+css_antiteamflash_flash_aggregation_time <1.0-10.0> деф. 3.0 – Время агрегации статистики для одной флешки (секунды).
 ~~~
 ### Консольные команды
 ~~~
-css_antiteamflash_help – Показать подробную справку по плагину.
-css_antiteamflash_settings – Показать текущие настройки и активные флешки.
-css_antiteamflash_test – Вывести в чат информацию о настройках и отправить тестовое сообщение в HUD (доступно только игроку).
-css_antiteamflash_reload – Перезагрузить конфигурацию из файла и сбросить все активные данные.
-css_antiteamflash_setenabled <0/1> – Установить значение css_antiteamflash_enabled.
-css_antiteamflash_setflashowner <0/1> – Установить значение css_antiteamflash_flashowner.
-css_antiteamflash_setloglevel <0-5> – Установить уровень логирования.
-css_antiteamflash_sethudduration <1.0-10.0> – Установить css_antiteamflash_hud_duration.
-css_antiteamflash_setaggregationtime <1.0-10.0> – Установить css_antiteamflash_flash_aggregation_time.
+ccss_antiteamflash_settings – показать текущие настройки (вкл/выкл, самоослепление, длительность HUD, время агрегации) и количество активных флешек.
+css_antiteamflash_reload – перезагрузить конфигурацию из файла, сбросить статистику всех флешек и очистить все HUD-сообщения.
+css_antiteamflash_setenabled <0/1> – включить (1) или выключить (0) весь плагин.
+css_antiteamflash_setflashowner <0/1> – разрешить (1) или запретить (0) самоослепление (ослепление от своей флешки).
+css_antiteamflash_sethudduration <1.0-10.0> – установить длительность показа HUD-сообщений в секундах (значение автоматически ограничивается диапазоном).
+css_antiteamflash_setaggregationtime <1.0-10.0> – установить время сбора статистики для одной флешки в секундах, после которого статистика сбрасывается.
 ~~~
 ### ЭТОТ ПЛАГИН ФОРК ЭТОГО ПЛАГИНА:
 
