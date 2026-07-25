@@ -1,4 +1,4 @@
-﻿﻿using CounterStrikeSharp.API;
+﻿using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Core.Attributes;
 using CounterStrikeSharp.API.Modules.Commands;
@@ -49,19 +49,19 @@ public class AntiTeamFlashConfig : BasePluginConfig
     public float FlashAggregationTime { get; set; } = 3.0f;
 }
 
-[MinimumApiVersion(369)]
+[MinimumApiVersion(371)]
 public class CS2AntiTeamFlash : BasePlugin, IPluginConfig<AntiTeamFlashConfig>
 {
     public override string ModuleName => "CS2 AntiTeamFlash";
     public override string ModuleAuthor => "Fixed by le1t1337 + AI DeepSeek. Code logic by Jesewe";
-    public override string ModuleVersion => "1.6";
+    public override string ModuleVersion => "1.7";
 
     public required AntiTeamFlashConfig Config { get; set; }
 
-    // Обновлённые оффсеты из нового дампа
-    private const int m_flFlashDuration = 0xCE4;   // float32
-    private const int m_flFlashMaxAlpha = 0xCE8;   // float32
-    private const int m_blindUntilTime = 0xC18;    // GameTime_t
+    // Обновлённые оффсеты из дампа server_dll (7).cs
+    private const int m_flFlashDuration = 0xD14;   // float32
+    private const int m_flFlashMaxAlpha = 0xD18;   // float32
+    private const int m_blindUntilTime = 0xC48;    // GameTime_t
 
     private class FlashbangStats
     {
@@ -94,16 +94,7 @@ public class CS2AntiTeamFlash : BasePlugin, IPluginConfig<AntiTeamFlashConfig>
 
     public override void Load(bool isReload)
     {
-        // Удаление старого конфига (если он лежал в старой папке без подчёркивания)
-        string oldConfigPath = Path.Combine(Server.GameDirectory, "counterstrikesharp", "configs", "plugins", "CS2AntiTeamFlash.json");
-        if (File.Exists(oldConfigPath))
-        {
-            try { File.Delete(oldConfigPath); } catch { }
-        }
-
         // Команды
-        AddCommand("css_antiteamflash_settings", "Показать текущие настройки", OnSettingsCommand);
-        AddCommand("css_antiteamflash_reload", "Перезагрузить конфигурацию", OnReloadCommand);
         AddCommand("css_antiteamflash_setenabled", "Включить/выключить плагин (0/1)", OnSetEnabledCommand);
         AddCommand("css_antiteamflash_setflashowner", "Разрешить самоослепление (0/1)", OnSetFlashOwnerCommand);
         AddCommand("css_antiteamflash_sethudduration", "Установить длительность HUD (1.0-10.0)", OnSetHudDurationCommand);
@@ -321,60 +312,6 @@ public class CS2AntiTeamFlash : BasePlugin, IPluginConfig<AntiTeamFlashConfig>
     }
 
     // ---------- Команды ----------
-    private void OnSettingsCommand(CCSPlayerController? player, CommandInfo command)
-    {
-        string enabledStatus = Config.Enabled == 1 ? "Включён" : "Отключён";
-        string flashOwnerStatus = Config.FlashOwner == 1 ? "Разрешено" : "Запрещено";
-        int onlineCount = Utilities.GetPlayers().Count(IsValidAnyPlayer);
-        int activeFlashes = _activeFlashes.Count;
-
-        string settings = $"""
-            ================================================
-            ТЕКУЩИЕ НАСТРОЙКИ {ModuleName} v{ModuleVersion}
-            ================================================
-            Плагин: {enabledStatus}
-            Самоослепление: {flashOwnerStatus}
-            Длительность HUD: {Config.HudDuration:F1} сек.
-            Время агрегации: {Config.FlashAggregationTime:F1} сек.
-
-            Активных игроков: {onlineCount}
-            Активных флешек: {activeFlashes}
-            ================================================
-            """;
-        command.ReplyToCommand(settings);
-        if (player != null)
-            player.PrintToChat(" [AntiTeamFlash] Настройки отправлены в консоль.");
-    }
-
-    private void OnReloadCommand(CCSPlayerController? player, CommandInfo command)
-    {
-        try
-        {
-            string configPath = Path.Combine(Server.GameDirectory, "counterstrikesharp", "configs", "plugins", "CS2_AntiTeamFlash", "CS2_AntiTeamFlash.json");
-            if (File.Exists(configPath))
-            {
-                string json = File.ReadAllText(configPath);
-                var newConfig = System.Text.Json.JsonSerializer.Deserialize<AntiTeamFlashConfig>(json);
-                if (newConfig != null)
-                    OnConfigParsed(newConfig);
-                SaveConfig();
-            }
-            else
-                SaveConfig();
-
-            foreach (var stats in _activeFlashes.Values)
-                stats.CleanupTimer?.Kill();
-            _activeFlashes.Clear();
-            ClearHudMessages();
-
-            command.ReplyToCommand("[AntiTeamFlash] Конфигурация перезагружена.");
-        }
-        catch
-        {
-            command.ReplyToCommand("[AntiTeamFlash] Ошибка при перезагрузке конфига.");
-        }
-    }
-
     private void OnSetEnabledCommand(CCSPlayerController? player, CommandInfo command)
     {
         if (command.ArgCount < 2)
