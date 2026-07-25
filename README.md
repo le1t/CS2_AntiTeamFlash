@@ -6,7 +6,7 @@
 
 ### Требования
 ~~~
-CounterStrikeSharp API версии 371или выше
+CounterStrikeSharp API версии 371 или выше
 .NET 10.0 Runtime
 ~~~
 ### Конфигурационные параметры
